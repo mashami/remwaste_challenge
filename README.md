@@ -30,6 +30,7 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+
 ### 🔗 Live Sandbox
 
 Test the updated project here: [View on CodeSandbox](https://codesandbox.io/p/github/mashami/remwaste_challenge/main)
