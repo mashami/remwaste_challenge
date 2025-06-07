@@ -1,19 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Image from "next/image";
-import React from "react";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import { SkipTypes } from "@/utils/types";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface CardProps extends SkipTypes {
+  selected: boolean;
+}
 
 const Card = ({
   id,
   image,
   size,
   price_before_vat,
-  hire_period_days
-}: SkipTypes) => {
+  hire_period_days,
+  selected
+}: CardProps) => {
   return (
-    <div className="p-6 border-[3px] border-white bg-[#F0E8E8] rounded-[8px] group min-h-32 hover:border-[#00F2FF] transition duration-300 ease-in-out cursor-pointer">
+    <div
+      className={cn(
+        " p-6 border-[3px] border-white bg-[#F0E8E8] rounded-[8px] group min-h-32 hover:border-[#00F2FF] transition duration-300 ease-in-out cursor-pointer shadow-card",
+        selected && "border-[#00F2FF]"
+      )}
+    >
       <div className="relative h-52 w-full rounded-[8px] overflow-hidden">
         <div className="bg-[#00F2FF]/80 px-3 py-1 rounded-[14px] text-[16px] font-bold text-white absolute top-2.5 right-2 z-50">
           {size} Yards
@@ -41,10 +52,32 @@ const Card = ({
           £{price_before_vat}
         </h1>
 
-        <Button className="w-full bg-white text-black py-5 text-[16px] font-bold flex items-center space-x-1.5 hover:bg-white/60 cursor-pointer transition duration-300 ease-in-out">
-          <p>Select This Skip</p>
-          <ArrowRight />
-        </Button>
+        <AnimatePresence mode="wait">
+          {selected ? (
+            <motion.button
+              key="selected"
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -20, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="w-full bg-[#00F2FF] shadow-2xl hover:bg-[#00F2FF]/75 transition duration-300 ease-in-out text-white py-3 text-[16px] font-bold cursor-pointer flex items-center justify-center space-x-1.5 rounded-md"
+            >
+              <p>Selected</p>
+            </motion.button>
+          ) : (
+            <motion.button
+              key="unselected"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 20, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="w-full bg-white transition duration-300 ease-in-out text-black py-3 text-[16px] font-bold cursor-pointer flex items-center justify-center space-x-1.5 hover:bg-white/60 rounded-md"
+            >
+              <p>Select This Skip</p>
+              <ArrowRight />
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
